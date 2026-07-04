@@ -1,0 +1,42 @@
+﻿@model EMS.Web.Models.ViewModels.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<div class="card" style="max-width: 500px;">
+    <div class="card-body p-4">
+        <p>Are you sure you want to delete this employee?</p>
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+            @if (!string.IsNullOrEmpty(Model.ExistingPhotoPath))
+            {
+                <img src="@Model.ExistingPhotoPath" width="56" height="56" class="rounded-circle" style="object-fit:cover;" />
+            }
+            <div>
+                <div class="fw-semibold">@Model.FullName</div>
+                <div class="text-muted small">@Model.Email</div>
+            </div>
+        </div>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-5">Department</dt>
+            <dd class="col-sm-7">@Model.DepartmentName</dd>
+
+            <dt class="col-sm-5">Designation</dt>
+            <dd class="col-sm-7">@Model.DesignationName</dd>
+        </dl>
+
+        <div class="alert alert-warning mt-3 mb-0">
+            This action is permanent and cannot be undone.
+        </div>
+
+        <form asp-action="Delete" method="post" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash me-1"></i> Delete
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

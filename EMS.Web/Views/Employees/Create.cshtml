@@ -1,0 +1,138 @@
+﻿@model EMS.Web.Models.ViewModels.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Add Employee";
+}
+
+<div class="card" style="max-width: 700px;">
+    <div class="card-body p-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Phone" class="form-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DateOfBirth" class="form-label"></label>
+                    <input asp-for="DateOfBirth" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="JoiningDate" class="form-label"></label>
+                    <input asp-for="JoiningDate" class="form-control" />
+                    <span asp-validation-for="JoiningDate" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger small"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DepartmentId" class="form-label"></label>
+                    <select asp-for="DepartmentId" asp-items="Model.Departments" id="departmentSelect" class="form-select">
+                        <option value="">-- Select Department --</option>
+                    </select>
+                    <span asp-validation-for="DepartmentId" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DesignationId" class="form-label"></label>
+                    <select asp-for="DesignationId" id="designationSelect" class="form-select">
+                        <option value="">-- Select Department First --</option>
+                    </select>
+                    <span asp-validation-for="DesignationId" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Salary" class="form-label"></label>
+                    <input asp-for="Salary" class="form-control" />
+                    <span asp-validation-for="Salary" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<EMS.Web.Models.EmployeeStatus>()"></select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhotoFile" class="form-label"></label>
+                <input asp-for="PhotoFile" type="file" accept="image/*" class="form-control" />
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="CreateLoginAccount" class="form-check-input" />
+                <label asp-for="CreateLoginAccount" class="form-check-label"></label>
+                <div class="form-text">Creates a login account for this employee with the "Employee" role. A temporary password will be shown once after saving — share it with them securely.</div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i> Save
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const departmentSelect = document.getElementById('departmentSelect');
+        const designationSelect = document.getElementById('designationSelect');
+
+        departmentSelect.addEventListener('change', function () {
+            const departmentId = this.value;
+            designationSelect.innerHTML = '<option value="">Loading...</option>';
+
+            if (!departmentId) {
+                designationSelect.innerHTML = '<option value="">-- Select Department First --</option>';
+                return;
+            }
+
+            fetch(`/Employees/GetDesignationsByDepartment?departmentId=${departmentId}`)
+                .then(res => res.json())
+                .then(data => {
+                    designationSelect.innerHTML = '<option value="">-- Select Designation --</option>';
+                    data.forEach(d => {
+                        const opt = document.createElement('option');
+                        opt.value = d.id;
+                        opt.textContent = d.title;
+                        designationSelect.appendChild(opt);
+                    });
+                })
+                .catch(() => {
+                    designationSelect.innerHTML = '<option value="">Failed to load</option>';
+                });
+        });
+    </script>
+}

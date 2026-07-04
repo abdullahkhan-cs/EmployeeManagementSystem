@@ -1,0 +1,54 @@
+﻿@model List<EMS.Web.Models.ViewModels.DesignationViewModel>
+
+@{
+    ViewData["Title"] = "Designations";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Add Designation
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th class="ps-3">Title</th>
+                    <th>Department</th>
+                    <th>Employees</th>
+                    <th class="text-end pe-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">No designations found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var des in Model)
+                    {
+                        <tr>
+                            <td class="ps-3 fw-semibold">@des.Title</td>
+                            <td><span class="badge bg-secondary">@des.DepartmentName</span></td>
+                            <td>@des.EmployeeCount</td>
+                            <td class="text-end pe-3">
+                                <a asp-action="Edit" asp-route-id="@des.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@des.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
