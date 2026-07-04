@@ -207,8 +207,8 @@ This project is licensed under the MIT License.
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- GitHub: [@abdullahkhan-cs](https://github.com/abdullahkhan-cs)
+- LinkedIn: [Abdullah Khan](https://linkedin.com/in/abdullah-malokani)
 
 ## 🙏 Acknowledgments
 
